@@ -12,14 +12,15 @@
 ``` r
 set.seed(663948)
 simNum <- 10000
+doorNum <- 3
 
 library(data.table)
 
-simdt <- CJ(sim=1:simNum, door=1:3)
+simdt <- CJ(sim=1:simNum, door=1:doorNum)
 
 mhdt <-  simdt[, `:=`(guess=sample(c(0, 0, 1)), true=sample(c(0, 0, 1)), switch=0), .(sim)][
     order(sim, -guess, true)][
-    rowid(sim)==3, switch:=1][
+    rowid(sim)==doorNum, switch:=1][
     , .(stayWin = sum(guess*true)/simNum, switchWin=sum(switch*true)/simNum)]
 
 mhdt
@@ -32,25 +33,14 @@ mhdt
 ``` r
 library(tidyr)
 library(dplyr)
-## 
-## Attaching package: 'dplyr'
-## The following objects are masked from 'package:data.table':
-## 
-##     between, first, last
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
 
-simtv <- expand_grid(sim=1:simNum, door=1:3)
+simtv <- expand_grid(sim=1:simNum, door=1:doorNum)
 
 mhtv <- simtv %>%
     group_by(sim) %>%
     mutate(guess=sample(c(0, 0, 1)), true=sample(c(0, 0, 1))) %>%
     arrange(sim, -guess, true) %>%
-    mutate(switch = as.numeric(row_number(sim)==3)) %>%
+    mutate(switch = as.numeric(row_number(sim)==doorNum)) %>%
     ungroup %>%
     summarise(stayWin = sum(guess*true)/simNum,
               switchWin=sum(switch*true)/simNum)
@@ -65,7 +55,7 @@ mhtv
 ## Base R Simulation
 
 ``` r
-mhbrGrid <- expand.grid(door=1:3, sim=1:simNum, guess=NA, true=NA, switch=0)
+mhbrGrid <- expand.grid(door=1:doorNum, sim=1:simNum, guess=NA, true=NA, switch=0)
 
 mhbr <- do.call(rbind, lapply(split(mhbrGrid, mhbrGrid[, "sim"]), function(x){ 
   x$guess <- sample(c(0, 0, 1))
@@ -77,9 +67,30 @@ mhbr <- do.call(rbind, lapply(split(mhbrGrid, mhbrGrid[, "sim"]), function(x){
   mh
   }))
 
-cat("\n\t   stayWin = ", sum(mhbr$stayWin)/simNum, 
-    "\n\t switchWin = ", sum(mhbr$switchWin)/simNum, "\n")
-## 
-##     stayWin =  0.3311 
-##   switchWin =  0.6689
+rbind(list(stayWin = sum(mhbr$stayWin)/simNum, 
+           switchWin = sum(mhbr$switchWin)/simNum))
+##      stayWin switchWin
+## [1,] 0.3311  0.6689
+```
+
+``` r
+rDoors <- function(sims, doors){
+  unlist(lapply(1:sims, function(x) sample(c(0, 0, 1), replace = FALSE))[])
+}
+
+# Note that for this method to work the "sim" variable must be sorted in order and
+# then the door (which is why the order matters to the expand.grid() function)
+mhbrGrid <- expand.grid(door=1:doorNum, sim=1:simNum)
+mhbrGrid$true <- rDoors(simNum, doorNum)
+mhbrGrid$guess <- rDoors(simNum, doorNum)
+
+mhbr <- mhbrGrid[with(mhbrGrid, order(sim, -guess, true)), ]
+mhbr$switch <- rep(c(0, 0, 1), simNum)
+mhbr$stayWin <- with(mhbr, guess*true)
+mhbr$switchWin <- with(mhbr, switch*true)
+
+rbind(list(stayWin = sum(mhbr$stayWin)/simNum, 
+           switchWin = sum(mhbr$switchWin)/simNum))
+##      stayWin switchWin
+## [1,] 0.3337  0.6663
 ```
