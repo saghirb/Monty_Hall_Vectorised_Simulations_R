@@ -7,13 +7,74 @@
 
 # Monty Hall Problem - Vectorised Simulations
 
-## `data.table` Simulation
+This repository presents three vectorised simulations to the “Monty Hall
+Problem” in [R](https://r-project.org) using Base R, `data.table` and a
+tidyverse approach.
+
+## Monty Hall Problem
+
+There is a good write up and description about the Monty Hall Problem on
+Wikipedia from which I quote:
+
+*The Monty Hall problem is a brain teaser, in the form of a probability
+puzzle, loosely based on the American television game show Let’s Make a
+Deal and named after its original host, Monty Hall.*
+
+> Suppose you’re on a game show, and you’re given the choice of three
+> doors: Behind one door is a car; behind the others, goats. You pick a
+> door, say No. 1, and the host, who knows what’s behind the doors,
+> opens another door, say No. 3, which has a goat. He then says to you,
+> “Do you want to pick door No. 2?” Is it to your advantage to switch
+> your choice?
+
+  - **Source:** <https://en.Wikipedia.org/wiki/Monty_Hall_problem>
+
+## Simulations
+
+The following parameters will be be used to make these simulations
+reproducible and ensure that we are comparing like with like.
 
 ``` r
 set.seed(663948)
 simNum <- 10000
 doorNum <- 3
+```
 
+## Base R (R Zeroverse) Simulation
+
+The first simulation only uses Base R functions. I call it “R zeroverse”
+as CRAN contributed packages are not allowed (just vanilla
+R).
+
+``` r
+# A function to simulate randomly chosen doors for the truth door and the guess.
+rDoors <- function(sims, doors){
+  unlist(lapply(1:sims, function(x) sample(c(0, 0, 1), replace = FALSE))[])
+}
+
+# Note that for this method to work the data must be sorted by "sim" then the door 
+# (hence the order in the expand.grid() function).
+mhbrGrid <- expand.grid(door=1:doorNum, sim=1:simNum)
+mhbrGrid$true <- rDoors(simNum, doorNum)
+mhbrGrid$guess <- rDoors(simNum, doorNum)
+
+mhbr <- mhbrGrid[with(mhbrGrid, order(sim, -guess, true)), ]
+mhbr$switch <- rep(c(0, 0, 1), simNum)
+mhbr$stayWin <- with(mhbr, guess*true)
+mhbr$switchWin <- with(mhbr, switch*true)
+
+mhbrSim <- rbind(list(stayWin = sum(mhbr$stayWin)/simNum, 
+                      switchWin = sum(mhbr$switchWin)/simNum))
+mhbrSim
+##      stayWin switchWin
+## [1,] 0.3352  0.6648
+```
+
+## `data.table` Simulation
+
+A neat simulation using [`data.table`](http://r-datatable.com/).
+
+``` r
 library(data.table)
 
 simdt <- CJ(sim=1:simNum, door=1:doorNum)
@@ -25,14 +86,17 @@ mhdt <-  simdt[, `:=`(guess=sample(c(0, 0, 1)), true=sample(c(0, 0, 1)), switch=
 
 mhdt
 ##    stayWin switchWin
-## 1:  0.3343    0.6657
+## 1:  0.3406    0.6594
 ```
 
 ## Tidyverse Simulation
 
+A neat simulation using `dplyr` and `tidyr` packages from the
+[tidyverse](https://tidyverse.org).
+
 ``` r
-library(tidyr)
 library(dplyr)
+library(tidyr)
 
 simtv <- expand_grid(sim=1:simNum, door=1:doorNum)
 
@@ -49,48 +113,16 @@ mhtv
 ## # A tibble: 1 x 2
 ##   stayWin switchWin
 ##     <dbl>     <dbl>
-## 1   0.336     0.664
+## 1   0.331     0.669
 ```
 
-## Base R Simulation
+## Summary
 
-``` r
-mhbrGrid <- expand.grid(door=1:doorNum, sim=1:simNum, guess=NA, true=NA, switch=0)
+  - All three simulations lead to the same conclusion in that it is
+    probabilistically better to switch.
+  - Using a `for` loop based approach is perfectly fine for this type of
+    problem. I just wanted a vectorised approach as it was bugging me ;)
+  - R gives users a lot of choices and many users have their preferences
+    hence I to decided to provide three possible solutions :)
 
-mhbr <- do.call(rbind, lapply(split(mhbrGrid, mhbrGrid[, "sim"]), function(x){ 
-  x$guess <- sample(c(0, 0, 1))
-  x$true <- sample(c(0, 0, 1))
-  mh <- x[with(x, order(sim, -guess, true)), ]
-  mh$switch[nrow(x)] <- 1
-  mh$stayWin <- with(mh, guess*true)
-  mh$switchWin <- with(mh, switch*true)
-  mh
-  }))
-
-rbind(list(stayWin = sum(mhbr$stayWin)/simNum, 
-           switchWin = sum(mhbr$switchWin)/simNum))
-##      stayWin switchWin
-## [1,] 0.3311  0.6689
-```
-
-``` r
-rDoors <- function(sims, doors){
-  unlist(lapply(1:sims, function(x) sample(c(0, 0, 1), replace = FALSE))[])
-}
-
-# Note that for this method to work the "sim" variable must be sorted in order and
-# then the door (which is why the order matters to the expand.grid() function)
-mhbrGrid <- expand.grid(door=1:doorNum, sim=1:simNum)
-mhbrGrid$true <- rDoors(simNum, doorNum)
-mhbrGrid$guess <- rDoors(simNum, doorNum)
-
-mhbr <- mhbrGrid[with(mhbrGrid, order(sim, -guess, true)), ]
-mhbr$switch <- rep(c(0, 0, 1), simNum)
-mhbr$stayWin <- with(mhbr, guess*true)
-mhbr$switchWin <- with(mhbr, switch*true)
-
-rbind(list(stayWin = sum(mhbr$stayWin)/simNum, 
-           switchWin = sum(mhbr$switchWin)/simNum))
-##      stayWin switchWin
-## [1,] 0.3337  0.6663
-```
+**Thanks for reading\!**
