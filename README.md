@@ -43,7 +43,8 @@ Deal and named after its original host, Monty Hall.*
 
 ## Objective
 
-> 
+> Use simulations to estimate the probability of winning for both
+> staying with the chosen door and switching door when offered.
 
 ## Simulations
 
@@ -61,10 +62,10 @@ Each of the simulations below will create the following variables:
   - `sim` – simulation number.
   - `door` – door number.
   - `true` – behind true door: 1 = car & 0 = goat.
-  - `guess` – contestant guessed door: 1 = car & 0 = goat.
+  - `guess` – contestant chosen door: 1 = car & 0 = goat.
   - `switch` – door offered to the contestant to switch to.
 
-The probably of staying with guessed door or switching a
+These are then summarize as follows:
 
   - `stayWin` – proportion of winning by staying with `guess` door.
   - `switchWin` – proportion of winning by switching to `switch` door.
@@ -78,7 +79,7 @@ R).
 ``` r
 # A function to simulate randomly chosen doors for the truth door and the guess.
 rDoors <- function(sims, doors){
-  unlist(lapply(1:sims, function(x) sample(c(0, 0, 1), replace = FALSE))[])
+  unlist(lapply(1:sims, function(x) sample(c(0, 0, 1), replace = FALSE)))
 }
 
 # Note that for this method to work the data must be sorted by "sim" then the door 
