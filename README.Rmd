@@ -25,10 +25,21 @@ which I quote:
 
 *The Monty Hall problem is a brain teaser, in the form of a probability puzzle, loosely based on the American television game show Let's Make a Deal and named after its original host, Monty Hall.* 
 
+**Question**
+
 > Suppose you're on a game show, and you're given the choice of three doors: Behind one door is a car; behind the others, goats. You pick a door, say No. 1, and the host, who knows what's behind the doors, opens another door, say No. 3, which has a goat. He then says to you, "Do you want to pick door No. 2?" Is it to your advantage to switch your choice? 
 
-+ **Source:** https://en.Wikipedia.org/wiki/Monty_Hall_problem
+**Standard Assumptions**
 
++ The host must always open a door that was not picked by the contestant.
++ The host must always open a door to reveal a goat and never the car.
++ The host must always offer the chance to switch between the originally chosen door and the remaining closed door.
+
+**Source:** https://en.Wikipedia.org/wiki/Monty_Hall_problem
+
+## Objective
+
+> 
 
 ## Simulations 
 
@@ -40,6 +51,19 @@ set.seed(663948)
 simNum <- 10000
 doorNum <- 3
 ```
+
+Each of the simulations below will create the following variables:
+
++ `sim` -- simulation number.
++ `door` -- door number.
++ `true` -- behind true door: 1 = car & 0 = goat.
++ `guess` -- contestant guessed door: 1 = car & 0 = goat.
++ `switch` -- door offered to the contestant to switch to.
+
+The probably of staying with guessed door or switching a
+
++ `stayWin`  -- proportion of winning by staying with `guess` door.
++ `switchWin`  -- proportion of winning by switching to `switch` door.
 
 ## Base R (R Zeroverse) Simulation
 
@@ -81,7 +105,7 @@ simdt <- CJ(sim=1:simNum, door=1:doorNum)
 mhdt <-  simdt[, `:=`(guess=sample(c(0, 0, 1)), true=sample(c(0, 0, 1)), switch=0), .(sim)][
     order(sim, -guess, true)][
     rowid(sim)==doorNum, switch:=1][
-    , .(stayWin = sum(guess*true)/simNum, switchWin=sum(switch*true)/simNum)]
+    , .(stayWin = sum(guess*true)/simNum, switchWin = sum(switch*true)/simNum)]
 
 mhdt
 ```
@@ -103,7 +127,7 @@ mhtv <- simtv %>%
     mutate(switch = as.numeric(row_number(sim)==doorNum)) %>%
     ungroup %>%
     summarise(stayWin = sum(guess*true)/simNum,
-              switchWin=sum(switch*true)/simNum)
+              switchWin = sum(switch*true)/simNum)
 
 mhtv
 ```
@@ -112,10 +136,10 @@ mhtv
 
 + All three simulations lead to the same conclusion in that it is probabilistically 
 better to switch. 
-+ Using a `for` loop based approach is perfectly fine for this type of problem. 
-I just wanted a vectorised approach as it was bugging me ;) 
-+ R gives users a lot of choices and many users have their preferences hence I to
-decided to provide three possible solutions :)
++ Using a `for` loop based approach is perfectly. I just wanted to code a vectorised 
+approach as it was bugging me ;) 
++ R gives users a lot of choices and often users have their preferences hence I to
+decided to provide the three possible solutions above :)
 
 **Thanks for reading!**
 
