@@ -7,6 +7,8 @@
 
 # Monty Hall Problem - Vectorised Simulations
 
+![Monty Hall Problem Image](README_files/Monty_open_door.svg)
+
 This repository presents three vectorised simulations to the “Monty Hall
 Problem” in [R](https://r-project.org) using Base R, `data.table` and a
 tidyverse approach.
