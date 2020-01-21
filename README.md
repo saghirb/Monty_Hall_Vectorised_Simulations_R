@@ -10,12 +10,17 @@
 ![Monty Hall Problem Image](README_files/Monty_open_door.svg)
 
 This repository presents three vectorised simulations to the “Monty Hall
-Problem” in [R](https://r-project.org) using Base R, `data.table` and a
-tidyverse approach.
+Problem” in [R](https://r-project.org) using:
+
+1.  base R.
+2.  a [tinyverse](http://tinyverse.org/) approach using the `data.table`
+    package.
+3.  a [tidyverse](https://tidyverse.org) approach using `dplyr` and
+    `tidyr` packages.
 
 ## Monty Hall Problem
 
-There is a good write up and description about the Monty Hall Problem on
+There is a good write up and discussion about the Monty Hall Problem on
 Wikipedia from which I quote:
 
 *The Monty Hall problem is a brain teaser, in the form of a probability
@@ -33,23 +38,23 @@ Deal and named after its original host, Monty Hall.*
 
 **Standard Assumptions**
 
-  - The host must always open a door that was not picked by the
-    contestant.
-  - The host must always open a door to reveal a goat and never the car.
-  - The host must always offer the chance to switch between the
-    originally chosen door and the remaining closed door.
+  - *The host must always open a door that was not picked by the
+    contestant.*
+  - *The host must always open a door to reveal a goat and never the
+    car.*
+  - *The host must always offer the chance to switch between the
+    originally chosen door and the remaining closed door.*
 
 **Source:** <https://en.Wikipedia.org/wiki/Monty_Hall_problem>
 
 ## Objective
 
-> Use simulations to estimate the probability of winning for both
-> staying with the chosen door and switching door when offered.
+> Use a vectorised approach to simulating the probability of winning for
+> both staying with the chosen door and switching door when offered.
 
 ## Simulations
 
-The following parameters will be be used to make these simulations
-reproducible and ensure that we are comparing like with like.
+We set the following parameters to make these simulations reproducible :
 
 ``` r
 set.seed(663948)
@@ -65,7 +70,7 @@ Each of the simulations below will create the following variables:
   - `guess` – contestant chosen door: 1 = car & 0 = goat.
   - `switch` – door offered to the contestant to switch to.
 
-These are then summarize as follows:
+These are then summarised as follows:
 
   - `stayWin` – proportion of winning by staying with `guess` door.
   - `switchWin` – proportion of winning by switching to `switch` door.
@@ -93,16 +98,17 @@ mhbr$switch <- rep(c(0, 0, 1), simNum)
 mhbr$stayWin <- with(mhbr, guess*true)
 mhbr$switchWin <- with(mhbr, switch*true)
 
-mhbrSim <- rbind(list(stayWin = sum(mhbr$stayWin)/simNum, 
+mhBaseR <- rbind(list(stayWin = sum(mhbr$stayWin)/simNum, 
                       switchWin = sum(mhbr$switchWin)/simNum))
-mhbrSim
+mhBaseR
 ##      stayWin switchWin
 ## [1,] 0.3352  0.6648
 ```
 
 ## `data.table` Simulation
 
-A neat simulation using [`data.table`](http://r-datatable.com/).
+A neat [tinyverse](http://tinyverse.org/) simulation using
+[`data.table`](http://r-datatable.com/) package.
 
 ``` r
 library(data.table)
@@ -121,8 +127,8 @@ mhdt
 
 ## Tidyverse Simulation
 
-A neat simulation using `dplyr` and `tidyr` packages from the
-[tidyverse](https://tidyverse.org).
+A neat [tidyverse](https://tidyverse.org) simulation using `dplyr` and
+`tidyr` packages.
 
 ``` r
 library(dplyr)
@@ -148,12 +154,15 @@ mhtv
 
 ## Summary
 
-  - All three simulations lead to the same conclusion in that it is
+  - All three simulations lead to the same conclusion – that it is
     probabilistically better to switch.
-  - Using a `for` loop based approach is perfectly. I just wanted to
-    code a vectorised approach as it was bugging me ;)
-  - R gives users a lot of choices and often users have their
-    preferences hence I to decided to provide the three possible
-    solutions above :)
+  - Using a `for` loop based approach is perfectly fine. I just wanted
+    to code a vectorised approach as it was bugging me ;)
+  - I provide three vectorised solutions as the R community are diverse
+    with different preferences.
 
-**Thanks for reading\!**
+## Acknowledgements
+
+Thank to the [R core](https://www.r-project.org/contributors.html),
+[`data.table`](https://rdatatable.gitlab.io/data.table/authors.html) and
+[tidyverse](https://tidyverse.org) authors maintainers and contributors.
