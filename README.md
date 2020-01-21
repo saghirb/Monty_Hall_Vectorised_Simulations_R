@@ -12,10 +12,10 @@
 This repository presents three vectorised simulations to the “Monty Hall
 Problem” in [R](https://r-project.org) using:
 
-1.  base R.
-2.  a [tinyverse](http://tinyverse.org/) approach using the `data.table`
+1.  Base R.
+2.  A [tinyverse](http://tinyverse.org/) approach using the `data.table`
     package.
-3.  a [tidyverse](https://tidyverse.org) approach using `dplyr` and
+3.  A [tidyverse](https://tidyverse.org) approach using `dplyr` and
     `tidyr` packages.
 
 ## Monty Hall Problem
