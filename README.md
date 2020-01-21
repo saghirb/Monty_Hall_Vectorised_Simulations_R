@@ -54,12 +54,15 @@ Deal and named after its original host, Monty Hall.*
 
 ## Simulations
 
+The idea is to simulate multiple games (and outcomes) to evaluate
+whether staying or switching would be better.
+
 We set the following parameters to make these simulations reproducible :
 
 ``` r
 set.seed(663948)
-simNum <- 100000
-doorNum <- 3
+simNum <- 100000  # Number of simulations
+doorNum <- 3      # Number of doors (not strictly necessary)
 ```
 
 Each of the simulations below will create the following variables:
@@ -67,7 +70,7 @@ Each of the simulations below will create the following variables:
   - `sim` – simulation number.
   - `door` – door number.
   - `true` – behind true door: 1 = car & 0 = goat.
-  - `guess` – contestant chosen door: 1 = car & 0 = goat.
+  - `guess` – contestant’s chosen door: 1 = car & 0 = goat.
   - `switch` – door offered to the contestant to switch to.
 
 These are then summarised as follows:
@@ -158,10 +161,11 @@ mhtv
   - All three simulations lead to the same conclusion – that
     probabilistically it is better to switch.
   - I provide three vectorised solutions as the R community is diverse
-    has different preferences.
-  - Using a `for` loop based approach is perfectly fine for this
-    problem. I just wanted code it using a vectorised approach as it was
-    bugging me ;)
+    and each member/group has different preferences.
+      - There are other ways to simulate this problem.
+      - Using a `for` loop based approach is perfectly fine.
+      - I just wanted code it using a vectorised approach as it was
+        bugging me ;)
 
 **Thanks for reading.**
 
