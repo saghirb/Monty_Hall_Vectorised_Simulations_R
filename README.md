@@ -5,7 +5,7 @@
 
 <!-- Thanks to Bob Rudis for sharing.                                 -->
 
-# Monty Hall Problem - Vectorised Simulations
+# Monty Hall Problem - Vectorised Simulations in R
 
 ![Monty Hall Problem Image](README_files/Monty_open_door.svg)
 
@@ -49,8 +49,8 @@ Deal and named after its original host, Monty Hall.*
 
 ## Objective
 
-> Use a vectorised approach to simulating the probability of winning for
-> both staying with the chosen door and switching door when offered.
+> Use a vectorised approach to simulate the probability of winning for
+> both, staying with the chosen door and switching door when offered.
 
 ## Simulations
 
@@ -78,8 +78,9 @@ These are then summarised as follows:
 ## Base R (R Zeroverse) Simulation
 
 The first simulation only uses Base R functions. I call it “R zeroverse”
-as CRAN contributed packages are not allowed to be
-used.
+as CRAN contributed packages are not allowed, just those that come with
+R by default (e.g. `base`, `graphics`
+`stats`).
 
 ``` r
 # A function to simulate randomly chosen doors for the truth door and the guess.
@@ -154,10 +155,10 @@ mhtv
 
 ## Summary
 
-  - All three simulations lead to the same conclusion – that it is
-    probabilistically better to switch.
+  - All three simulations lead to the same conclusion – that
+    probabilistically it is better to switch.
   - I provide three vectorised solutions as the R community is diverse
-    and with different preferences.
+    has different preferences.
   - Using a `for` loop based approach is perfectly fine for this
     problem. I just wanted code it using a vectorised approach as it was
     bugging me ;)

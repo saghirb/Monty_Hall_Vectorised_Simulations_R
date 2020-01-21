@@ -13,7 +13,7 @@ knitr::opts_chunk$set(collapse=TRUE,
                       fig.path = "README_figs/README-")
 ```
 
-# Monty Hall Problem - Vectorised Simulations
+# Monty Hall Problem - Vectorised Simulations in R
 
 ![Monty Hall Problem Image](README_files/Monty_open_door.svg)
 
@@ -45,7 +45,7 @@ which I quote:
 
 ## Objective
 
-> Use a vectorised approach to simulating the probability of winning for both staying with 
+> Use a vectorised approach to simulate the probability of winning for both, staying with 
 the chosen door and switching door when offered.
 
 ## Simulations 
@@ -73,7 +73,8 @@ These are then summarised as follows:
 ## Base R (R Zeroverse) Simulation
 
 The first simulation only uses Base R functions. I call it "R zeroverse" as CRAN 
-contributed packages are not allowed to be used.
+contributed packages are not allowed, just those that come with R by default (e.g. 
+`base`, `graphics` `stats`).
 
 
 ```{r brSim}
@@ -140,9 +141,9 @@ mhtv
 
 ## Summary
 
-+ All three simulations lead to the same conclusion -- that it is probabilistically 
++ All three simulations lead to the same conclusion -- that probabilistically it is
 better to switch. 
-+ I provide three vectorised solutions as the R community is diverse and with different
++ I provide three vectorised solutions as the R community is diverse has different
 preferences. 
 + Using a `for` loop based approach is perfectly fine for this problem. I just wanted 
 code it using a vectorised approach as it was bugging me ;) 
