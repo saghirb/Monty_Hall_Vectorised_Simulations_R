@@ -167,7 +167,7 @@ mhtv
 
 ## Acknowledgements
 
-Thank to the [R core](https://www.r-project.org/contributors.html),
+Thanks to the [R core](https://www.r-project.org/contributors.html),
 [`data.table`](https://rdatatable.gitlab.io/data.table/authors.html) and
 [tidyverse](https://tidyverse.org) authors, maintainers and
 contributors.
