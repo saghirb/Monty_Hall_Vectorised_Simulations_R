@@ -58,7 +58,7 @@ We set the following parameters to make these simulations reproducible :
 
 ``` r
 set.seed(663948)
-simNum <- 10000
+simNum <- 100000
 doorNum <- 3
 ```
 
@@ -83,15 +83,15 @@ R).
 
 ``` r
 # A function to simulate randomly chosen doors for the truth door and the guess.
-rDoors <- function(sims, doors){
+rDoors <- function(sims){
   unlist(lapply(1:sims, function(x) sample(c(0, 0, 1), replace = FALSE)))
 }
 
 # Note that for this method to work the data must be sorted by "sim" then the door 
 # (hence the order in the expand.grid() function).
 mhbrGrid <- expand.grid(door=1:doorNum, sim=1:simNum)
-mhbrGrid$true <- rDoors(simNum, doorNum)
-mhbrGrid$guess <- rDoors(simNum, doorNum)
+mhbrGrid$true <- rDoors(simNum)
+mhbrGrid$guess <- rDoors(simNum)
 
 mhbr <- mhbrGrid[with(mhbrGrid, order(sim, -guess, true)), ]
 mhbr$switch <- rep(c(0, 0, 1), simNum)
@@ -102,7 +102,7 @@ mhBaseR <- rbind(list(stayWin = sum(mhbr$stayWin)/simNum,
                       switchWin = sum(mhbr$switchWin)/simNum))
 mhBaseR
 ##      stayWin switchWin
-## [1,] 0.3352  0.6648
+## [1,] 0.3315  0.6685
 ```
 
 ## `data.table` Simulation
@@ -122,7 +122,7 @@ mhdt <-  simdt[, `:=`(guess=sample(c(0, 0, 1)), true=sample(c(0, 0, 1)), switch=
 
 mhdt
 ##    stayWin switchWin
-## 1:  0.3406    0.6594
+## 1: 0.33156   0.66844
 ```
 
 ## Tidyverse Simulation
@@ -149,20 +149,24 @@ mhtv
 ## # A tibble: 1 x 2
 ##   stayWin switchWin
 ##     <dbl>     <dbl>
-## 1   0.331     0.669
+## 1   0.333     0.667
 ```
 
 ## Summary
 
   - All three simulations lead to the same conclusion – that it is
     probabilistically better to switch.
-  - Using a `for` loop based approach is perfectly fine. I just wanted
-    to code a vectorised approach as it was bugging me ;)
-  - I provide three vectorised solutions as the R community are diverse
-    with different preferences.
+  - I provide three vectorised solutions as the R community is diverse
+    and with different preferences.
+  - Using a `for` loop based approach is perfectly fine for this
+    problem. I just wanted code it using a vectorised approach as it was
+    bugging me ;)
+
+**Thanks for reading.**
 
 ## Acknowledgements
 
 Thank to the [R core](https://www.r-project.org/contributors.html),
 [`data.table`](https://rdatatable.gitlab.io/data.table/authors.html) and
-[tidyverse](https://tidyverse.org) authors maintainers and contributors.
+[tidyverse](https://tidyverse.org) authors, maintainers and
+contributors.

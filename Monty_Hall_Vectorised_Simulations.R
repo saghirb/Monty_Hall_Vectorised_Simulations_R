@@ -1,20 +1,20 @@
-## ----simSetup--------------------------------------------------------------------------------------------
+## ----simSetup-------------------------------------------------------------------------------------------
 set.seed(663948)
-simNum <- 10000
+simNum <- 100000
 doorNum <- 3
 
 
-## ----brSim-----------------------------------------------------------------------------------------------
+## ----brSim----------------------------------------------------------------------------------------------
 # A function to simulate randomly chosen doors for the truth door and the guess.
-rDoors <- function(sims, doors){
+rDoors <- function(sims){
   unlist(lapply(1:sims, function(x) sample(c(0, 0, 1), replace = FALSE)))
 }
 
 # Note that for this method to work the data must be sorted by "sim" then the door 
 # (hence the order in the expand.grid() function).
 mhbrGrid <- expand.grid(door=1:doorNum, sim=1:simNum)
-mhbrGrid$true <- rDoors(simNum, doorNum)
-mhbrGrid$guess <- rDoors(simNum, doorNum)
+mhbrGrid$true <- rDoors(simNum)
+mhbrGrid$guess <- rDoors(simNum)
 
 mhbr <- mhbrGrid[with(mhbrGrid, order(sim, -guess, true)), ]
 mhbr$switch <- rep(c(0, 0, 1), simNum)
@@ -26,7 +26,7 @@ mhBaseR <- rbind(list(stayWin = sum(mhbr$stayWin)/simNum,
 mhBaseR
 
 
-## ----dtSim, message=FALSE--------------------------------------------------------------------------------
+## ----dtSim, message=FALSE-------------------------------------------------------------------------------
 library(data.table)
 
 simdt <- CJ(sim=1:simNum, door=1:doorNum)
@@ -39,7 +39,7 @@ mhdt <-  simdt[, `:=`(guess=sample(c(0, 0, 1)), true=sample(c(0, 0, 1)), switch=
 mhdt
 
 
-## ----tvSim, message=FALSE--------------------------------------------------------------------------------
+## ----tvSim, message=FALSE-------------------------------------------------------------------------------
 library(dplyr)
 library(tidyr)
 

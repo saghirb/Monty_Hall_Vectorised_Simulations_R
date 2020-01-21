@@ -8,5 +8,5 @@ rmarkdown::render(here("README.Rmd"), output_dir = here(), clean = TRUE)
 
 # Extract R code from README.Rmd
 knitr::purl(input = here("README.Rmd"),
-            output = here("Monty_Hall_Vectorised_Simulations_R.R"),
+            output = here("Monty_Hall_Vectorised_Simulations.R"),
             documentation = 1L)
