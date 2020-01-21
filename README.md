@@ -78,8 +78,8 @@ These are then summarised as follows:
 ## Base R (R Zeroverse) Simulation
 
 The first simulation only uses Base R functions. I call it “R zeroverse”
-as CRAN contributed packages are not allowed (just vanilla
-R).
+as CRAN contributed packages are not allowed to be
+used.
 
 ``` r
 # A function to simulate randomly chosen doors for the truth door and the guess.
@@ -105,7 +105,7 @@ mhBaseR
 ## [1,] 0.3315  0.6685
 ```
 
-## `data.table` Simulation
+## Tinyverse (`data.table`) Simulation
 
 A neat [tinyverse](http://tinyverse.org/) simulation using
 [`data.table`](http://r-datatable.com/) package.
@@ -125,7 +125,7 @@ mhdt
 ## 1: 0.33156   0.66844
 ```
 
-## Tidyverse Simulation
+## Tidyverse (`dplyr` & `tidyr`) Simulation
 
 A neat [tidyverse](https://tidyverse.org) simulation using `dplyr` and
 `tidyr` packages.

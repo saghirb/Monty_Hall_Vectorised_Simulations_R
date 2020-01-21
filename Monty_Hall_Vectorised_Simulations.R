@@ -1,10 +1,10 @@
-## ----simSetup-------------------------------------------------------------------------------------------
+## ----simSetup--------------------------------------------------------------------------------------------
 set.seed(663948)
 simNum <- 100000
 doorNum <- 3
 
 
-## ----brSim----------------------------------------------------------------------------------------------
+## ----brSim-----------------------------------------------------------------------------------------------
 # A function to simulate randomly chosen doors for the truth door and the guess.
 rDoors <- function(sims){
   unlist(lapply(1:sims, function(x) sample(c(0, 0, 1), replace = FALSE)))
@@ -26,7 +26,7 @@ mhBaseR <- rbind(list(stayWin = sum(mhbr$stayWin)/simNum,
 mhBaseR
 
 
-## ----dtSim, message=FALSE-------------------------------------------------------------------------------
+## ----dtSim, message=FALSE--------------------------------------------------------------------------------
 library(data.table)
 
 simdt <- CJ(sim=1:simNum, door=1:doorNum)
@@ -39,7 +39,7 @@ mhdt <-  simdt[, `:=`(guess=sample(c(0, 0, 1)), true=sample(c(0, 0, 1)), switch=
 mhdt
 
 
-## ----tvSim, message=FALSE-------------------------------------------------------------------------------
+## ----tvSim, message=FALSE--------------------------------------------------------------------------------
 library(dplyr)
 library(tidyr)
 

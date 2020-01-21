@@ -73,7 +73,7 @@ These are then summarised as follows:
 ## Base R (R Zeroverse) Simulation
 
 The first simulation only uses Base R functions. I call it "R zeroverse" as CRAN 
-contributed packages are not allowed (just vanilla R).
+contributed packages are not allowed to be used.
 
 
 ```{r brSim}
@@ -98,7 +98,7 @@ mhBaseR <- rbind(list(stayWin = sum(mhbr$stayWin)/simNum,
 mhBaseR
 ```
 
-## `data.table` Simulation
+## Tinyverse (`data.table`) Simulation
 
 A neat [tinyverse](http://tinyverse.org/) simulation using [`data.table`](http://r-datatable.com/)
 package.
@@ -116,7 +116,7 @@ mhdt <-  simdt[, `:=`(guess=sample(c(0, 0, 1)), true=sample(c(0, 0, 1)), switch=
 mhdt
 ```
 
-## Tidyverse Simulation
+## Tidyverse (`dplyr` & `tidyr`) Simulation
 
 A neat [tidyverse](https://tidyverse.org) simulation using `dplyr` and `tidyr` packages.
 
