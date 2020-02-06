@@ -138,9 +138,7 @@ A neat [tidyverse](https://tidyverse.org) simulation using `dplyr` and
 library(dplyr)
 library(tidyr)
 
-simtv <- expand_grid(sim=1:simNum, door=1:doorNum)
-
-mhtv <- simtv %>%
+mhtv <- expand_grid(sim=1:simNum, door=1:doorNum) %>%
     group_by(sim) %>%
     mutate(guess=sample(c(0, 0, 1)), true=sample(c(0, 0, 1))) %>%
     arrange(sim, -guess, true) %>%
